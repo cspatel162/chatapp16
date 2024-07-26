@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../utils/theme.dart';
+import 'login_screen.dart';
 
 class ChatScreen extends StatefulWidget {
   final String recipientId;
@@ -139,13 +141,13 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ThemeProvider.appColor,
-        title: Text(widget.recipientName),
+        title: Text(widget.recipientName,style: ThemeProvider.titleStyle,),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
-              Navigator.of(context).popUntil((route) => route.isFirst);
+              Get.to(() => const LoginScreen());
             },
           ),
         ],

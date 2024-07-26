@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../utils/theme.dart';
 import 'chat_screen.dart';
+import 'login_screen.dart';
 
 class UserListScreen extends StatefulWidget {
   @override
@@ -40,6 +42,15 @@ class _UserListScreenState extends State<UserListScreen> {
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: const Text('Chat Users', style: ThemeProvider.titleStyle1),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              Get.to(() => const LoginScreen());
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
