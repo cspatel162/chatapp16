@@ -2,7 +2,6 @@
 import 'package:chatapp16/view/user_list_screen.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
-import '../view/chat_screen.dart';
 import '../view/login_screen.dart';
 import '../view/signup_screen.dart';
 

@@ -1,3 +1,4 @@
+import 'package:chatapp16/helper/elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../utils/theme.dart';
@@ -20,19 +21,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Future<void> signUp() async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
 
-      await FirebaseFirestore.instance.collection('users').doc(userCredential.user?.uid).set({
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user?.uid)
+          .set({
         'name': nameController.text,
         'email': emailController.text,
         'mobileNumber': mobileNumberController.text,
       });
       Get.snackbar('Success', 'Account created successfully');
       Get.to(() => LoginScreen());
-
     } on FirebaseAuthException catch (e) {
       print('Error: $e');
       Get.snackbar('Error', e.message ?? 'An error occurred');
@@ -77,7 +81,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             Container(
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
                                 decoration: textFieldDecoration(),
                                 child: TextFormField(
                                   controller: nameController,
@@ -95,7 +100,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             Container(
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
                                 decoration: textFieldDecoration(),
                                 child: TextFormField(
                                   controller: emailController,
@@ -113,7 +119,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             Container(
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
                                 decoration: textFieldDecoration(),
                                 child: TextFormField(
                                   controller: passwordController,
@@ -132,7 +139,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             Container(
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
                                 decoration: textFieldDecoration(),
                                 child: TextFormField(
                                   controller: mobileNumberController,
@@ -147,11 +155,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                               ),
                             ),
-                            ElevatedButton(
+
+                            MyElevatedButton(
                               onPressed: signUp,
-                              style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all(ThemeProvider.appColor),
-                              ),
+                              color: ThemeProvider.appColor,
+                              height: 45,
+                              width: double.infinity,
                               child: Text('Sign up'.tr),
                             ),
                           ]),

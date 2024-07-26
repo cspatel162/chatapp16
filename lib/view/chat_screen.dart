@@ -141,13 +141,18 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ThemeProvider.appColor,
-        title: Text(widget.recipientName,style: ThemeProvider.titleStyle,),
+        title: Text(
+          widget.recipientName,
+          style: ThemeProvider.titleStyle,
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
-              Get.to(() => const LoginScreen());
+              Get.snackbar('Logout', 'Logout Successful');
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => const LoginScreen()));
             },
           ),
         ],

@@ -35,6 +35,12 @@ class _UserListScreenState extends State<UserListScreen> {
   Widget build(BuildContext context) {
     final currentUser = FirebaseAuth.instance.currentUser;
 
+    if (currentUser == null) {
+      return Scaffold(
+        body: Center(child: Text('User not logged in')),
+      );
+    }
+
     return Scaffold(
       backgroundColor: ThemeProvider.backgroundColor,
       appBar: AppBar(
@@ -47,7 +53,9 @@ class _UserListScreenState extends State<UserListScreen> {
             icon: const Icon(Icons.logout),
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
-              Get.to(() => const LoginScreen());
+              Get.snackbar('Logout', 'Logout Successful');
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => LoginScreen()));
             },
           ),
         ],
@@ -60,7 +68,8 @@ class _UserListScreenState extends State<UserListScreen> {
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: 'Search...',
-                prefixIcon: const Icon(Icons.search, color: ThemeProvider.appColor),
+                prefixIcon:
+                const Icon(Icons.search, color: ThemeProvider.appColor),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(25.0),
                   borderSide: BorderSide.none,
@@ -72,7 +81,8 @@ class _UserListScreenState extends State<UserListScreen> {
           ),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection('users').snapshots(),
+              stream:
+              FirebaseFirestore.instance.collection('users').snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
@@ -88,10 +98,10 @@ class _UserListScreenState extends State<UserListScreen> {
                   itemBuilder: (context, index) {
                     final user = users[index];
                     final userId = user.id;
-                    final userName = user['name'];
+                    final userName = user['name'] ?? 'Unknown';
                     final userMobileNumber = user['mobileNumber'] ?? '';
 
-                    if (currentUser!.uid == userId) {
+                    if (currentUser.uid == userId) {
                       return Container(); // Skip displaying the current user
                     }
                     return Card(
@@ -99,13 +109,15 @@ class _UserListScreenState extends State<UserListScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       color: ThemeProvider.whiteColor,
-                      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
                       child: ListTile(
                         contentPadding: const EdgeInsets.all(10),
                         leading: CircleAvatar(
                           radius: 30,
                           backgroundColor: ThemeProvider.appColor,
-                          child: Text(userName[0], style: const TextStyle(color: Colors.white)),
+                          child: Text(userName[0],
+                              style: const TextStyle(color: Colors.white)),
                         ),
                         title: Text(userName, style: ThemeProvider.titleStyle2),
                         subtitle: Text(userMobileNumber),
@@ -132,7 +144,8 @@ class _UserListScreenState extends State<UserListScreen> {
                             children: [
                               Icon(Icons.chat, color: Colors.white),
                               SizedBox(width: 5),
-                              Text('Chat', style: TextStyle(color: Colors.white)),
+                              Text('Chat',
+                                  style: TextStyle(color: Colors.white)),
                             ],
                           ),
                         ),

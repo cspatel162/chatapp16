@@ -1,5 +1,5 @@
-
 import 'package:chatapp16/routes/AppRoutes.dart';
+import 'package:chatapp16/view/signup_screen.dart';
 import 'package:chatapp16/view/user_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,13 +34,14 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
       Get.snackbar('Success', 'Login Successful');
-      Get.to(() => UserListScreen());
-
+      // Get.to(() => UserListScreen());
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) =>  UserListScreen()));
     } on FirebaseAuthException catch (e) {
       String message = 'An error occurred';
       if (e.code == 'network-request-failed') {
@@ -97,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               child: Container(
                                 padding:
-                                const EdgeInsets.symmetric(horizontal: 16),
+                                    const EdgeInsets.symmetric(horizontal: 16),
                                 decoration: textFieldDecoration(),
                                 child: TextFormField(
                                   controller: emailController,
@@ -116,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               child: Container(
                                 padding:
-                                const EdgeInsets.symmetric(horizontal: 16),
+                                    const EdgeInsets.symmetric(horizontal: 16),
                                 decoration: textFieldDecoration(),
                                 child: TextFormField(
                                   controller: passwordController,
@@ -133,7 +134,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                             MyTextButton(
-                                onPressed: () => Get.to(() => AppRoutes.getSignupRoute()),
+                                onPressed: () =>
+                                    Get.to(() =>const SignUpScreen()),
                                 text: 'Don\'t have an account? Sign Up'.tr,
                                 colors: ThemeProvider.appColor),
                             const SizedBox(height: 12),
@@ -145,7 +147,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 color: ThemeProvider.appColor,
                                 height: 45,
                                 width: double.infinity,
-                                child: Text('Login'.tr, style: const TextStyle(letterSpacing: 1, fontSize: 16, color: ThemeProvider.whiteColor, fontFamily: 'bold')),
+                                child: Text('Login'.tr,
+                                    style: const TextStyle(
+                                        letterSpacing: 1,
+                                        fontSize: 16,
+                                        color: ThemeProvider.whiteColor,
+                                        fontFamily: 'bold')),
                               ),
                           ]),
                     ),
